@@ -1,0 +1,142 @@
+﻿import java.util.Scanner;
+
+import static java.lang.Double.parseDouble;
+
+abstract class Shape {
+    public abstract double calculateArea();
+
+    public abstract double calculateVolume();
+}
+
+abstract class Triangle extends Shape {
+    private double base;
+    private double height;
+
+    public Triangle(double base, double height) {
+        this.base = base;
+        this.height = height;
+    }
+
+    @Override
+    public double calculateArea() {
+        return 0.5 * base * height;
+    }
+}
+
+abstract class Circle extends Shape {
+    private double radius;
+
+    public Circle(double radius) {
+        this.radius = radius;
+    }
+
+    @Override
+    public double calculateArea() {
+        return Math.PI * (radius * radius);
+    }
+}
+
+abstract class Rectangle extends Shape {
+    private double length;
+    private double breadth;
+
+    public Rectangle(double length, double breadth) {
+        this.length = length;
+        this.breadth = breadth;
+    }
+
+    @Override
+    public double calculateArea() {
+        return length * breadth;
+    }
+}
+
+class Sphere extends Shape {
+    private double radius;
+
+    public Sphere(double radius) {
+        this.radius = radius;
+    }
+
+    @Override
+    public double calculateArea() {
+        return 4 * Math.PI * (radius * radius);
+    }
+
+    public double calculateVolume() {
+        return 4.0/3.0 * Math.PI * (radius * radius * radius);
+    }
+}
+
+class Cube extends Shape {
+    private double side;
+
+    public Cube(double side) {
+        this.side = side;
+    }
+
+    @Override
+    public double calculateArea() {
+        return 6 * side * side;
+    }
+
+    public double calculateVolume() {
+        return side * side * side;
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter the shape type: ");
+        String shapeType = scanner.nextLine();
+        Shape shape;
+        if (shapeType.equalsIgnoreCase("Triangle")) {
+            System.out.println("Enter the base and height: ");
+            String[] props = scanner.nextLine().split(" ");
+            shape = new Triangle(parseDouble(props[0]), parseDouble(props[1])) {
+                @Override
+                public double calculateVolume() {
+                    return 0;
+                }
+            };
+        } else if (shapeType.equalsIgnoreCase("Circle")) {
+            System.out.println("Enter the radius: ");
+            String prop = scanner.nextLine();
+            shape = new Circle(parseDouble(prop)) {
+                @Override
+                public double calculateVolume() {
+                    return 0;
+                }
+            };
+        } else if (shapeType.equalsIgnoreCase("Rectangle")) {
+            System.out.println("Enter the length and breadth: ");
+            String[] props = scanner.nextLine().split(" ");
+            shape = new Rectangle(parseDouble(props[0]), parseDouble(props[1])) {
+                @Override
+                public double calculateVolume() {
+                    return 0;
+                }
+            };
+        } else if (shapeType.equalsIgnoreCase("Sphere")) {
+            System.out.println("Enter the radius: ");
+            String prop = scanner.nextLine();
+            shape = new Sphere(parseDouble(prop));
+        } else if (shapeType.equalsIgnoreCase("Cube")) {
+            System.out.println("Enter the side: ");
+            String prop = scanner.nextLine();
+            shape = new Cube(parseDouble(prop));
+        } else {
+            System.out.println("Invalid shape type");
+            return;
+        }
+        double area = shape.calculateArea();
+        if (shape instanceof Sphere || shape instanceof Cube) {
+            double volume = ((Shape) shape).calculateVolume();
+            System.out.println("Area: " + area + ", Volume: " + volume);
+        } else {
+            System.out.println("Area: " + area);
+        }
+    }
+}
+
